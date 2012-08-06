@@ -1,0 +1,6 @@
+tmp
+build
+*.class
+*.pyc
+*.pyo
+
