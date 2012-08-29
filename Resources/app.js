@@ -6,8 +6,6 @@ var win = Titanium.UI.createWindow({
     backgroundColor:'#fff'
 });
 
-
-
 var webView = Ti.UI.createWebView({
 	height: Ti.UI.FILL,
 	width: Ti.UI.FILL,
@@ -16,20 +14,23 @@ var webView = Ti.UI.createWebView({
 win.add(webView);
 
 win.open();
+
 /**
- * Events
+ * WebView Bridge
  */
+var TiWebBridge = require('libs/tibridge');
+new TiWebBridge({webview: webView});
+
+/*
 Ti.App.addEventListener('fromwebview', function(e){
 	Ti.API.info('WEBVIEW_EVENT:fromwebview '+e.msg);
 	
 	switch(e.msg){
-		case 'page2':
-			webView.url = 'html/page2.html';
+		case 'NAVIGATE':
+			webView.url = "html/"+e.data.location;
 		break;
-		case 'page1':
-			webView.url = 'html/page1.html';
-		break;
-		case 'showMap':
+		
+		case 'MAP':
 			var mapContainer = Ti.UI.createView({
 				height: 400,
 		        width: 300,
@@ -81,9 +82,19 @@ Ti.App.addEventListener('fromwebview', function(e){
 		    win.add(mapContainer);
 		break;
 		
-		case "callAlert":
-			webView.evalJS('callAlert("Hi There!!")');
+		case "COMM":
+			if(e.data.msg === 'deviceType')
+				webView.evalJS('TiBridge.alert("'+Ti.Platform.osname+'")');
+		break;
+		
+		case "SAVE":
+			if(e.data) {
+				Ti.App.Properties.setObect(e.data);
+				webView.evalJS('TiBridge.alert("Form '+e.data.form+' data stored succesfully!")');
+			}
 		break;
 		
 	}
+	
 });
+*/

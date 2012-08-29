@@ -21,19 +21,10 @@ Notes:
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <link rel="stylesheet" href="css/main.css" />
 
-<script>
-	
-	function sendToNative() {
-		
-		var f1 = document.getElementById('field1');
-		var f2 = document.getElementById('field2');
-		var f3 = document.getElementById('field3');
-		//alert(f1.value + " Saved");
-		Ti.App.fireEvent('fromwebview', {msg: 'storeInfo', appleID: f1.value, password: f2.value, country: f3.value});
-		
-	}
-	
-</script>
+<!-- Load the TiBridge Code for communicating with the Native Layer -->
+<script src="js/tibridge.js" language="JavaScript"></script>
+
+
 </head>
 
 <body>
@@ -42,7 +33,7 @@ Notes:
 		<div id="main">
 			<div class="header">
 				
-				<input type="submit" class="left" value="Back" onclick='Ti.App.fireEvent("fromwebview",{msg:"page1"});' />
+				<input type="submit" class="left" value="Home" onclick='TiBridge.navigate("index.html");' />
 				<h1 class="title"><script>document.write(document.title)</script></h1>
 				<!--<a class="right" href="page2.html">Page 2</a>-->
 				
@@ -52,14 +43,13 @@ Notes:
 				
 				<h2 class="title2">Form Example</h2>
 				
-				<div class="box-white">
+				<form name="myForm" id="myForm" class="box-white">
 					<p><label for="field1">Apple ID</label><input id="field1" type="text" value="xavi@example.com" /></p>
 					<p><label for="field2">Password</label><input id="field2" type="password" value="xavixavi" /></p>
 					<p><label for="field3">Country</label><select id="field3"><option>Spain</option><option>United Kingdom</option></select></p>
-				</div>
-			
-				<p><input type="submit" class="button" value="Send to Native" onclick='sendToNative();' /></p>
-							
+				</form>		
+				<p><input type="submit" class="button" value="Send to Native" onclick='TiBridge.storeFormData("myForm");' /></p>
+					
 			</div><!--content-->
 		
 		</div><!--main-->
